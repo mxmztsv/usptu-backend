@@ -36,12 +36,12 @@ db.trainings.belongsTo(db.employees, {
     foreignKey: 'Id_prepodavatelya'
 })
 
-db.trainings.belongsTo(db.trainingForms, {
-    foreignKey: 'Id_formy_stazhirovki'
+db.trainingForms.belongsTo(db.trainings, {
+    foreignKey: 'Id_povysheniya_kvalifikacii'
 })
 
-db.trainings.belongsTo(db.internshipForms, {
-    foreignKey: 'Id_formy_PK'
+db.internshipForms.belongsTo(db.trainings, {
+    foreignKey: 'Id_povysheniya_kvalifikacii'
 })
 
 module.exports = db
