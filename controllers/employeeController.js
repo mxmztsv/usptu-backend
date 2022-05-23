@@ -38,7 +38,6 @@ const save = async (req, res) => {
 }
 
 const remove = async (req, res) => {
-
     try {
         const employee = await Employee.destroy({
             where: {
@@ -50,10 +49,20 @@ const remove = async (req, res) => {
         console.error(e.message)
         res.sendStatus(500)
     }
+}
 
+const getAll = async (req, res) => {
+    try {
+        const employees = await Employee.findAll()
+        res.status(200).send(employees)
+    } catch (e) {
+        console.error(e.message)
+        res.sendStatus(500)
+    }
 }
 
 module.exports = {
     save,
-    remove
+    remove,
+    getAll
 }
