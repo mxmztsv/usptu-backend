@@ -30,6 +30,10 @@ module.exports = (sequelize, DataTypes) => {
             type: "varchar(150)",
             allowNull: false
         },
+        Rekomendacii: {
+            type: "varchar(150)",
+            allowNull: false
+        },
         Familiya_rukovoditelya: {
             type: "varchar(30)",
             allowNull: false

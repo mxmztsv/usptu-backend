@@ -4,6 +4,7 @@ var departmentRouter = require('./routes/department');
 var employeeRouter = require('./routes/employee');
 var trainingRouter = require('./routes/training');
 var trainingFormRouter = require('./routes/trainingForm');
+var internshipFormRouter = require('./routes/internshipForm');
 
 var app = express();
 
@@ -15,5 +16,6 @@ app.use('/department', departmentRouter);
 app.use('/employee', employeeRouter);
 app.use('/training', trainingRouter);
 app.use('/training-form', trainingFormRouter);
+app.use('/internship-form', internshipFormRouter);
 
 module.exports = app;

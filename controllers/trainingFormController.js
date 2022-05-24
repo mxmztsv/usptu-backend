@@ -1,5 +1,6 @@
 const db = require('../models')
 const TrainingForm = db.trainingForms
+const DocsGeneratorService = require("../services/docsGeneratorService")
 
 const save = async (req, res) => {
     const data = {
@@ -83,8 +84,19 @@ const getAllByTrainingId = async (req, res) => {
     }
 }
 
+const generateDocument = async (req, res) => {
+    try {
+        await DocsGeneratorService.generateDocument(req.body.type, req.body.trainingId)
+        res.sendStatus(201)
+    } catch (e) {
+        console.error(e.message)
+        res.sendStatus(500)
+    }
+}
+
 module.exports = {
     save,
     remove,
-    getAllByTrainingId
+    getAllByTrainingId,
+    generateDocument
 }

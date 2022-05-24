@@ -190,3 +190,7 @@ dist
 .yarn/install-state.gz
 .pnp.*
 
+/generated_docs
+generated_docs/
+/uploaded_docs
+uploaded_docs/
