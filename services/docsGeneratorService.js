@@ -91,7 +91,6 @@ const generateDocument = async (type, trainingId) => {
             break
     }
 
-
     const options = {
         template: {
             filePath: `../server/docs_templates/${templateFileName}`,
@@ -109,6 +108,7 @@ const generateDocument = async (type, trainingId) => {
                 // throw error
             } else {
                 console.log(message)
+                return outputFileName
             }
         })
     } catch (e) {

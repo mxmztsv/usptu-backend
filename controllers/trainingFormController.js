@@ -86,8 +86,20 @@ const getAllByTrainingId = async (req, res) => {
 
 const generateDocument = async (req, res) => {
     try {
-        await DocsGeneratorService.generateDocument(req.body.type, req.body.trainingId)
+        const fileName = await DocsGeneratorService.generateDocument(req.body.type, req.body.trainingId)
+        console.log(fileName)
         res.sendStatus(201)
+    } catch (e) {
+        console.error(e.message)
+        res.sendStatus(500)
+    }
+}
+
+const uploadReport = async (req, res) => {
+    try {
+        const doc = req.files.document
+        doc.mv('./uploaded_docs/' + doc.name)
+        res.sendStatus(200)
     } catch (e) {
         console.error(e.message)
         res.sendStatus(500)
@@ -98,5 +110,6 @@ module.exports = {
     save,
     remove,
     getAllByTrainingId,
-    generateDocument
+    generateDocument,
+    uploadReport
 }
