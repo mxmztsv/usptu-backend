@@ -6,12 +6,13 @@ var employeeRouter = require('./routes/employee');
 var trainingRouter = require('./routes/training');
 var trainingFormRouter = require('./routes/trainingForm');
 var internshipFormRouter = require('./routes/internshipForm');
+const cookieParser = require("cookie-parser");
 
 var app = express();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-
+app.use(cookieParser())
 app.use(fileUpload({
     createParentPath: true
 }));

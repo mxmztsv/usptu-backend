@@ -1,4 +1,5 @@
 const db = require('../models')
+const bcrypt = require("bcrypt")
 const Employee = db.employees
 
 const save = async (req, res) => {
@@ -12,8 +13,14 @@ const save = async (req, res) => {
         Zvanie: req.body.rank,
         Data_priema: req.body.hiringDate,
         Stazh: req.body.experience,
-        Id_podrazdeleniya: req.body.department
+        Id_podrazdeleniya: req.body.department,
+        Login: req.body.login,
+        Is_superuser: req.body.isSuperuser,
     }
+
+    console.log('pass', req.body.password)
+    data.Password = await bcrypt.hash(req.body.password, 3) // Хэшируем пароль
+    console.log('hash pass', data.Password)
 
     try {
         let candidate = null

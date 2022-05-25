@@ -48,6 +48,19 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.INTEGER,
             allowNull: false
         },
+        Login: {
+            type: "varchar(150)",
+            allowNull: false
+        },
+        Password: {
+            type: DataTypes.TEXT,
+            allowNull: false
+        },
+        Is_superuser: {
+            type: DataTypes.BOOLEAN,
+            allowNull: false,
+            defaultValue: false
+        },
 
 
     }, {
