@@ -2,7 +2,11 @@ const db = require('../models')
 const bcrypt = require("bcrypt")
 const Employee = db.employees
 
+/**
+ * Функция сохранения сотрудника. Все аналогично как в departmentController
+ */
 const save = async (req, res) => {
+    // Вытаскиваем поля из тела запроса
     const data = {
         Familiya: req.body.surname,
         Imya: req.body.name,
@@ -18,9 +22,8 @@ const save = async (req, res) => {
         Is_superuser: req.body.isSuperuser,
     }
 
-    console.log('pass', req.body.password)
-    data.Password = await bcrypt.hash(req.body.password, 3) // Хэшируем пароль
-    console.log('hash pass', data.Password)
+    // Хэшируем пароль и добавляем в data
+    data.Password = await bcrypt.hash(req.body.password, 3)
 
     try {
         let candidate = null
@@ -44,6 +47,9 @@ const save = async (req, res) => {
 
 }
 
+/**
+ * Функция удаления. Все аналогично как в departmentController
+ */
 const remove = async (req, res) => {
     try {
         const employee = await Employee.destroy({
@@ -58,6 +64,9 @@ const remove = async (req, res) => {
     }
 }
 
+/**
+ * Функция получения всех. Все аналогично как в departmentController
+ */
 const getAll = async (req, res) => {
     try {
         const employees = await Employee.findAll()
@@ -68,6 +77,7 @@ const getAll = async (req, res) => {
     }
 }
 
+// Экспорт функций из модуля
 module.exports = {
     save,
     remove,

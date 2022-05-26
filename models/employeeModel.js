@@ -1,3 +1,6 @@
+/**
+ * Модель сотрудника.
+ */
 module.exports = (sequelize, DataTypes) => {
 
     const Employee = sequelize.define("Sotrudnik", {

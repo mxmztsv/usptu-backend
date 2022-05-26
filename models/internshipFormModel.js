@@ -1,3 +1,6 @@
+/**
+ * Модель формы стажировки.
+ */
 module.exports = (sequelize, DataTypes) => {
 
     const InternshipForm = sequelize.define("Forma stazhirovki", {

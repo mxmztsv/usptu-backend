@@ -1,3 +1,7 @@
+
+/**
+ * Модель подразделения.
+ */
 module.exports = (sequelize, DataTypes) => {
 
     const Department = sequelize.define("Podrazdelenie", {

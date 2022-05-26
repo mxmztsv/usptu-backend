@@ -1,6 +1,7 @@
-const {Sequelize, DataTypes} = require('sequelize')
-require('dotenv').config()
+const {Sequelize, DataTypes} = require('sequelize') // Подключаем пакет ORM Sequelize
+require('dotenv').config() // Для доступа к переменным окружения
 
+// Инициализация БД с параметрами из конфига .env
 const sequelize = new Sequelize(
     process.env.DB_NAME,
     process.env.DB_USER,
@@ -11,12 +12,14 @@ const sequelize = new Sequelize(
     }
 )
 
+// Проверка подключения к БД
 sequelize.authenticate().then(() => {
     console.log("Connected to DB")
 }).catch(err => {
     console.error('DB connection error: ' + err)
 })
 
+// Создаем объект db и кладем туда модуль Sequelize и модели
 const db = {}
 
 db.Sequelize = Sequelize
@@ -28,12 +31,13 @@ db.trainings = require('./trainingModel')(sequelize, DataTypes)
 db.trainingForms = require('./trainingFormModel')(sequelize, DataTypes)
 db.internshipForms = require('./internshipFormModel')(sequelize, DataTypes)
 
+// Синхронизация с БД
 db.sequelize.sync()
     .then(() => {
         console.log('The database is synchronized')
     })
 
-//Relations
+// Relations
 db.employees.belongsTo(db.departments, {
     foreignKey: 'Id_podrazdeleniya'
 })
@@ -50,4 +54,5 @@ db.internshipForms.belongsTo(db.trainings, {
     foreignKey: 'Id_povysheniya_kvalifikacii'
 })
 
+// Экспорт объекта db
 module.exports = db

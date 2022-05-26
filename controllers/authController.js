@@ -3,43 +3,68 @@ const bcrypt = require("bcrypt");
 const TokenService = require("../services/tokenService");
 const Employee = db.employees
 
+/**
+ * Функция обработки запроса на авторизацию.
+ */
 const signIn = async (req, res) => {
     try {
-        const candidate = await Employee.findOne({where:{Login: req.body.login}})
+        // Поверяем, есть ли пользователь с таким логином в БД
+        const candidate = await Employee.findOne({
+            where: {
+                Login: req.body.login // Логин из тела запроса
+            }
+        })
         if (candidate) {
-            const isPasswordMatchesHash = await bcrypt.compare(req.body.password, candidate.dataValues.Password)
+            // Если пользователь есть, проверяем, совпадает ли переданный в теле запроса пароль с хэшем пароля в БД
+            const isPasswordMatchesHash = await bcrypt.compare(req.body.password, candidate.getDataValue('Password'))
             if (isPasswordMatchesHash) {
+                // Если пароль совпал, генерируем токены для пользователя
+                // В токены кладем id пользователя и поле о том, является ли он суперпользователем
                 const tokens = TokenService.generateTokens({
-                    id: candidate.dataValues.Id_prepodavatelya,
-                    IsSuperuser: candidate.dataValues.Is_superuser
+                    id: candidate.getDataValue('Id_prepodavatelya'),
+                    IsSuperuser: candidate.getDataValue('Is_superuser')
                 })
+                // Кладем access token в пользователя
                 candidate.dataValues.accessToken = tokens.accessToken
+                // Кладем refresh token в куки (пока не используется)
+                // Тут указывается время жизни куки и httpOnly - запрет доступа м помощью JavaScript(для безопасности)
                 res.cookie('refreshToken', tokens.refreshToken, {maxAge: 90 * 24 * 60 * 60 * 1000, httpOnly: true})
+                // Возвращаем json с пользователем в ответе
                 res.json(candidate.dataValues)
             } else {
+                // Если пароль не совпал, возвращаем статус-код 401 (Not authorized)
                 res.status(400).json({message: "Неправильный логин или пароль"})
             }
         } else {
+            // Если такого пользователя нет, возвращаем статус-код 401 (Not authorized)
             res.status(400).json({message: "Неправильный логин или пароль"})
         }
     } catch (e) {
         console.error(e.message)
+        // Если ловим ошибку, возвращаем 500 (Internal server error)
         res.sendStatus(500)
     }
 
 }
 
+/**
+ * Функция обработки запроса на выход.
+ */
 const signOut = async (req, res) => {
     try {
         const {refreshToken} = req.cookies
+        // Удаляем refresh token из куки
         res.clearCookie('refreshToken')
+        // Отправляем ответ 200 (ОК)
         res.sendStatus(200)
     } catch (e) {
         console.error(e.message)
+        // Если ловим ошибку, возвращаем 500 (Internal server error)
         res.sendStatus(500)
     }
 }
 
+// Экспорт функций из модуля
 module.exports = {
     signIn,
     signOut

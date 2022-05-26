@@ -2,6 +2,9 @@ const db = require('../models')
 const TrainingForm = db.trainingForms
 const DocsGeneratorService = require("../services/docsGeneratorService")
 
+/**
+ * Функция сохранения. Все аналогично как в departmentController
+ */
 const save = async (req, res) => {
     const data = {
         Id_formy_PK: req.body.formId,
@@ -56,6 +59,9 @@ const save = async (req, res) => {
 
 }
 
+/**
+ * Функция удаления. Все аналогично как в departmentController
+ */
 const remove = async (req, res) => {
     try {
         const trainingForm = await TrainingForm.destroy({
@@ -70,6 +76,9 @@ const remove = async (req, res) => {
     }
 }
 
+/**
+ * Функция получения всех форм стажировки по id повышения квалификации. Все аналогично как в departmentController
+ */
 const getAllByTrainingId = async (req, res) => {
     try {
         const trainingForms = await TrainingForm.findAll({
@@ -84,10 +93,15 @@ const getAllByTrainingId = async (req, res) => {
     }
 }
 
+/**
+ * Функция генерации документов
+ */
 const generateDocument = async (req, res) => {
+    // todo: Вероятно надо вынести в отдельный контроллер
     try {
+        // Генерируем документ и получает имя выходного файла
         const fileName = await DocsGeneratorService.generateDocument(req.body.type, req.body.trainingId)
-        console.log(fileName)
+        // Возвращаем код 201 (Created)
         res.sendStatus(201)
     } catch (e) {
         console.error(e.message)
@@ -95,10 +109,17 @@ const generateDocument = async (req, res) => {
     }
 }
 
+/**
+ * Функция загрузки подписанного документа
+ */
 const uploadReport = async (req, res) => {
+    // todo: Вероятно надо вынести в отдельный контроллер
     try {
+        // Получаем документ из загруженных файлов в запросе
         const doc = req.files.document
+        // Пермещаем документ в директорию uploaded_docs
         doc.mv('./uploaded_docs/' + doc.name)
+        // Возвращаем статус 200 (ОК)
         res.sendStatus(200)
     } catch (e) {
         console.error(e.message)
@@ -106,6 +127,7 @@ const uploadReport = async (req, res) => {
     }
 }
 
+// Мы уже знаем что это, не так ли? : )
 module.exports = {
     save,
     remove,

@@ -1,6 +1,9 @@
 const db = require('../models')
 const Training = db.trainings
 
+/**
+ * Функция сохранения. Все аналогично как в departmentController
+ */
 const save = async (req, res) => {
     const data = {
         Id_povysheniya_kvalifikacii: req.body.trainingId,
@@ -32,6 +35,9 @@ const save = async (req, res) => {
 
 }
 
+/**
+ * Функция удаления. Все аналогично как в departmentController
+ */
 const remove = async (req, res) => {
     try {
         const training = await Training.destroy({
@@ -46,6 +52,9 @@ const remove = async (req, res) => {
     }
 }
 
+/**
+ * Функция получения всех повышений квалификации по id сотрудника. Все аналогично как в departmentController
+ */
 const getAllByEmployeeId = async (req, res) => {
     try {
         const trainings = await Training.findAll({
@@ -60,6 +69,7 @@ const getAllByEmployeeId = async (req, res) => {
     }
 }
 
+// Экспорт модулей
 module.exports = {
     save,
     remove,

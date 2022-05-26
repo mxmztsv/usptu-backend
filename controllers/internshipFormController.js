@@ -1,6 +1,9 @@
 const db = require('../models')
 const InternshipForm = db.internshipForms
 
+/**
+ * Функция сохранения. Все аналогично как в departmentController
+ */
 const save = async (req, res) => {
     const data = {
         Id_formy_stazhirovki: req.body.formId,
@@ -39,6 +42,9 @@ const save = async (req, res) => {
 
 }
 
+/**
+ * Функция удаления. Все аналогично как в departmentController
+ */
 const remove = async (req, res) => {
     try {
         const internshipForm = await InternshipForm.destroy({
@@ -53,11 +59,14 @@ const remove = async (req, res) => {
     }
 }
 
+/**
+ * Функция получения всех форм стажировки по id повышения квалификации. Все аналогично как в departmentController
+ */
 const getAllByTrainingId = async (req, res) => {
     try {
         const internshipForms = await InternshipForm.findAll({
             where: {
-                Id_povysheniya_kvalifikacii: req.params.id
+                Id_povysheniya_kvalifikacii: req.params.id // Ищем по id повышения квалификации из тела запроса
             }
         })
         res.status(200).send(internshipForms)
@@ -67,6 +76,7 @@ const getAllByTrainingId = async (req, res) => {
     }
 }
 
+// Экспорт функций
 module.exports = {
     save,
     remove,

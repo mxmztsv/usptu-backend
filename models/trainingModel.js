@@ -1,3 +1,6 @@
+/**
+ * Модель повышения квалификации.
+ */
 module.exports = (sequelize, DataTypes) => {
 
     const Training = sequelize.define("Povyshenie kvalifikacii", {
