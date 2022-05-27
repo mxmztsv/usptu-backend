@@ -1,13 +1,17 @@
 const express = require('express')
 const TrainingController = require("../controllers/trainingController")
 const auth = require('../middlewares/authMiddleware')
+const ownerOnly = require('../middlewares/ownerMiddleware')
+const DocsController = require("../controllers/docsController");
 const router = express.Router()
 
 /**
  * Пути к эндпоинтам повышения квалификации с указанием метода запроса, middleware и контроллера.
  */
-router.post('/save', auth, TrainingController.save)
-router.post('/remove', auth, TrainingController.remove)
-router.get('/get-all-by-employee-id/:id', auth, TrainingController.getAllByEmployeeId)
+router.post('/save', auth, ownerOnly, TrainingController.save)
+router.post('/remove', auth, ownerOnly, TrainingController.remove)
+router.get('/get-all-by-employee-id/:id', auth, ownerOnly, TrainingController.getAllByEmployeeId)
+router.post('/generate-document', auth, DocsController.generateDocument)
+router.post('/upload-document', auth, DocsController.uploadReport)
 
 module.exports = router

@@ -93,45 +93,43 @@ const getAllByTrainingId = async (req, res) => {
     }
 }
 
-/**
- * Функция генерации документов
- */
-const generateDocument = async (req, res) => {
-    // todo: Вероятно надо вынести в отдельный контроллер
-    try {
-        // Генерируем документ и получает имя выходного файла
-        const fileName = await DocsGeneratorService.generateDocument(req.body.type, req.body.trainingId)
-        // Возвращаем код 201 (Created)
-        res.sendStatus(201)
-    } catch (e) {
-        console.error(e.message)
-        res.sendStatus(500)
-    }
-}
-
-/**
- * Функция загрузки подписанного документа
- */
-const uploadReport = async (req, res) => {
-    // todo: Вероятно надо вынести в отдельный контроллер
-    try {
-        // Получаем документ из загруженных файлов в запросе
-        const doc = req.files.document
-        // Пермещаем документ в директорию uploaded_docs
-        doc.mv('./uploaded_docs/' + doc.name)
-        // Возвращаем статус 200 (ОК)
-        res.sendStatus(200)
-    } catch (e) {
-        console.error(e.message)
-        res.sendStatus(500)
-    }
-}
+// /**
+//  * Функция генерации документов
+//  */
+// const generateDocument = async (req, res) => {
+//     // todo: Вероятно надо вынести в отдельный контроллер
+//     try {
+//         // Генерируем документ и получает имя выходного файла
+//         const fileName = await DocsGeneratorService.generateDocument(req.body.type, req.body.trainingId)
+//         // Возвращаем код 201 (Created)
+//         res.sendStatus(201)
+//     } catch (e) {
+//         console.error(e.message)
+//         res.sendStatus(500)
+//     }
+// }
+//
+// /**
+//  * Функция загрузки подписанного документа
+//  */
+// const uploadReport = async (req, res) => {
+//     // todo: Вероятно надо вынести в отдельный контроллер
+//     try {
+//         // Получаем документ из загруженных файлов в запросе
+//         const doc = req.files.document
+//         // Пермещаем документ в директорию uploaded_docs
+//         doc.mv('./uploaded_docs/' + doc.name)
+//         // Возвращаем статус 200 (ОК)
+//         res.sendStatus(200)
+//     } catch (e) {
+//         console.error(e.message)
+//         res.sendStatus(500)
+//     }
+// }
 
 // Мы уже знаем что это, не так ли? : )
 module.exports = {
     save,
     remove,
-    getAllByTrainingId,
-    generateDocument,
-    uploadReport
+    getAllByTrainingId
 }
