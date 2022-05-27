@@ -37,7 +37,11 @@ const save = async (req, res) => {
                 }
             })
         } else {
-            const employee = await Employee.create(data)
+            try {
+                const employee = await Employee.create(data)
+            } catch (e) {
+                return res.status(400).json({message: "Сотрудник с таким логином уже существует"})
+            }
         }
         res.sendStatus(201)
     } catch (e) {

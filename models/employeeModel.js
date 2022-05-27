@@ -53,7 +53,8 @@ module.exports = (sequelize, DataTypes) => {
         },
         Login: {
             type: "varchar(150)",
-            allowNull: false
+            allowNull: false,
+            unique: true
         },
         Password: {
             type: DataTypes.TEXT,

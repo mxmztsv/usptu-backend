@@ -22,13 +22,11 @@ const signIn = async (req, res) => {
                 // В токены кладем id пользователя и поле о том, является ли он суперпользователем
                 const tokens = TokenService.generateTokens({
                     id: candidate.getDataValue('Id_prepodavatelya'),
-                    IsSuperuser: candidate.getDataValue('Is_superuser')
+                    isSuperuser: candidate.getDataValue('Is_superuser')
                 })
-                // Кладем access token в пользователя
-                candidate.dataValues.accessToken = tokens.accessToken
-                // Кладем refresh token в куки (пока не используется)
-                // Тут указывается время жизни куки и httpOnly - запрет доступа м помощью JavaScript(для безопасности)
-                res.cookie('refreshToken', tokens.refreshToken, {maxAge: 90 * 24 * 60 * 60 * 1000, httpOnly: true})
+                // Кладем access token в куки
+                // Тут указывается время жизни (90 дней) куки и httpOnly - запрет доступа м помощью JavaScript(для безопасности)
+                res.cookie('accessToken', tokens.accessToken, {maxAge: 90 * 24 * 60 * 60 * 1000, httpOnly: true})
                 // Возвращаем json с пользователем в ответе
                 res.json(candidate.dataValues)
             } else {
@@ -52,9 +50,8 @@ const signIn = async (req, res) => {
  */
 const signOut = async (req, res) => {
     try {
-        const {refreshToken} = req.cookies
-        // Удаляем refresh token из куки
-        res.clearCookie('refreshToken')
+        // Удаляем access token из куки
+        res.clearCookie('accessToken')
         // Отправляем ответ 200 (ОК)
         res.sendStatus(200)
     } catch (e) {

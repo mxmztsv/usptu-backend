@@ -30,7 +30,11 @@ const save = async (req, res) => {
             })
         } else {
             // Если его нет, значит подразумевается создание нового подразделения
-            const department = await Department.create(data)
+            try {
+                const department = await Department.create(data)
+            } catch (e) {
+                return res.status(400).json({message: "Подразделение с таким названием уже существует"})
+            }
         }
         // Возвращаем в ответ код 201 (Created)
         res.sendStatus(201)

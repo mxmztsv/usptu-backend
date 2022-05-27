@@ -12,11 +12,13 @@ module.exports = (sequelize, DataTypes) => {
         },
         Polnoe_nazvanie: {
             type: "varchar(60)",
-            allowNull: false
+            allowNull: false,
+            unique: true
         },
         Abbreviatura: {
             type: "varchar(12)",
-            allowNull: false
+            allowNull: false,
+            unique: true
         },
         Familiya: {
             type: "varchar(30)",

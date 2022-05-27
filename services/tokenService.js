@@ -25,21 +25,8 @@ const validateAccessToken = (token) => {
     }
 }
 
-/**
- * Функция валидации refresh token. (пока не используется)
- */
-const validateRefreshToken = (token) => {
-    try {
-        // Возвращаем содержимое токена или null, если токен не валиден
-        return jwt.verify(token, process.env.JWT_REFRESH_SECRET)
-    } catch (e) {
-        return null
-    }
-}
-
 // Экспорт функций из модуля
 module.exports = {
     generateTokens,
-    validateAccessToken,
-    validateRefreshToken
+    validateAccessToken
 }

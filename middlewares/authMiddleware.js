@@ -13,15 +13,16 @@ module.exports =  (req, res, next) => {
     try {
 
         // Достаем токен из поля authorization заголовка запроса
-        const token = req.headers.authorization.split(' ')[1] // "Bearer TOKEN"
-
+        // const token = req.headers.authorization.split(' ')[1] // "Bearer TOKEN"
+        // Достаем токен из куки
+        const {accessToken} = req.cookies
         // Если токена нет, значит пользователь не авторизован, возвращаем статус-код 401 (Not authorized)
-        if (!token) {
+        if (!accessToken) {
             return res.status(401).json({ message: 'Пользователь не авторизован' })
         }
 
         // Валидируем токен и получаем его содержимое (или null, если токен не валиден)
-        req.user = TokenService.validateAccessToken(token)
+        req.user = TokenService.validateAccessToken(accessToken)
 
         if (req.user) {
             // Если получили содержимое, значит токен валиден, пропускаем запрос дальше по пайплайну
