@@ -7,7 +7,7 @@ const router = express.Router()
 /**
  * Пути к эндпоинтам подразделения с указанием метода запроса, middleware и контроллера.
  */
-router.post('/save', auth, adminOnly, DepartmentController.save)
+router.post('/save', DepartmentController.save)
 router.post('/remove', auth, adminOnly, DepartmentController.remove)
 router.get('/get-all', auth, adminOnly, DepartmentController.getAll)
 
