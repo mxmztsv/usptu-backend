@@ -7,7 +7,7 @@ const router = express.Router()
 /**
  * Пути к эндпоинтам сотрудника с указанием метода запроса, middleware и контроллера.
  */
-router.post('/save', auth, adminOnly, EmployeeController.save)
+router.post('/save', EmployeeController.save)
 router.post('/remove', auth, adminOnly, EmployeeController.remove)
 router.get('/get-all', auth, adminOnly, EmployeeController.getAll)
 

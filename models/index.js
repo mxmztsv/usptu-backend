@@ -2,12 +2,21 @@ const {Sequelize, DataTypes} = require('sequelize') // Подключаем па
 require('dotenv').config() // Для доступа к переменным окружения
 
 // Инициализация БД с параметрами из конфига .env
+// const sequelize = new Sequelize(
+//     process.env.DB_NAME,
+//     process.env.DB_USER,
+//     process.env.DB_PASSWORD,
+//     {
+//         host: process.env.DB_HOST,
+//         dialect: 'postgres'
+//     }
+// )
 const sequelize = new Sequelize(
-    process.env.DB_NAME,
-    process.env.DB_USER,
-    process.env.DB_PASSWORD,
+    'usptu',
+    'postgres',
+    'root',
     {
-        host: process.env.DB_HOST,
+        host: 'localhost',
         dialect: 'postgres'
     }
 )
