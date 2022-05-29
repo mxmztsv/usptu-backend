@@ -21,23 +21,26 @@ const save = async (req, res) => {
             // берем его из БД по id
             candidate = await Department.findByPk(req.body.id)
         }
+        let department
         if (candidate) {
             // Если такое подразделения нашлось, обновляем его в БД
-            const department = await Department.update(data, {
+            await Department.update(data, {
                 where: {
                     Id_podrazdeleniya: req.body.id
                 }
             })
+            // Получаем обновленное подразделение из БД
+            department = await Department.findByPk(req.body.id)
         } else {
             // Если его нет, значит подразумевается создание нового подразделения
             try {
-                const department = await Department.create(data)
+                department = await Department.create(data)
             } catch (e) {
                 return res.status(400).json({message: "Подразделение с таким названием уже существует"})
             }
         }
-        // Возвращаем в ответ код 201 (Created)
-        res.sendStatus(201)
+        // Возвращаем в ответ код 201 (Created) и подразделение
+        res.status(201).json(department)
     } catch (e) {
         console.error(e.message)
         // Если ловим ошибку, возвращаем 500 (Internal server error)

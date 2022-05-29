@@ -8,6 +8,6 @@ const router = express.Router()
  */
 router.post('/save', auth, InternshipFormController.save)
 router.post('/remove', auth, InternshipFormController.remove)
-router.get('/get-all-by-training-id/:id', auth, InternshipFormController.getAllByTrainingId)
+router.get('/get-by-training-id/:id', auth, InternshipFormController.getByTrainingId)
 
 module.exports = router

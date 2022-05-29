@@ -7,6 +7,6 @@ const router = express.Router()
  * Пути к эндпоинтам авторизации с указанием метода запроса, middleware и контроллера.
  */
 router.post('/sign-in', AuthController.signIn)
-router.post('/sign-out', auth, AuthController.signOut)
+router.post('/sign-out', AuthController.signOut)
 
 module.exports = router

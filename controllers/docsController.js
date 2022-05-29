@@ -7,8 +7,11 @@ const generateDocument = async (req, res) => {
     try {
         // Генерируем документ и получаем имя выходного файла
         const fileName = await DocsGeneratorService.generateDocument(req.body.type, req.body.trainingId)
+        console.log('fileName', fileName)
         // Возвращаем код 201 (Created)
-        res.sendStatus(201)
+        res.status(201).json({
+            fileName
+        })
     } catch (e) {
         console.error(e.message)
         res.sendStatus(500)

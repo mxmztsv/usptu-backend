@@ -8,7 +8,7 @@ const router = express.Router()
  */
 router.post('/save', auth, TrainingFormController.save)
 router.post('/remove', auth, TrainingFormController.remove)
-router.get('/get-all-by-training-id/:id', auth, TrainingFormController.getAllByTrainingId)
+router.get('/get-by-training-id/:id', auth, TrainingFormController.getByTrainingId)
 
 module.exports = router
 

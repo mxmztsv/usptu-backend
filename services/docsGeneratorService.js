@@ -128,17 +128,47 @@ const generateDocument = async (type, trainingId) => {
 
     try {
         // Вызываем функцию генерации из библиотеки generate-docx
-        generateDocx(options, (error, message) => {
+        generateDocx(options, async (error, message) => {
             if (error) {
                 console.error(error)
+                return
             } else {
                 console.log(message)
-                return outputFileName // Возвращаем из функции имя выходного файла
+                try {
+                    // Кладем в БД ссылку на отчет
+                    switch (type) {
+                        case "training_report":
+                            await TrainingForm.update({Otchet: outputFileName}, {
+                                where: {
+                                    Id_povysheniya_kvalifikacii: trainingId
+                                }
+                            })
+                            break
+                        case "internship_report":
+                            await InternshipForm.update({Otchet: outputFileName}, {
+                                where: {
+                                    Id_povysheniya_kvalifikacii: trainingId
+                                }
+                            })
+                            break
+                        case "training_form":
+                            await Training.update({Otchet: outputFileName}, {
+                                where: {
+                                    Id_povysheniya_kvalifikacii: trainingId
+                                }
+                            })
+                            break
+                    }
+                } catch (e) {
+                    throw e
+                }
             }
         })
     } catch (e) {
         throw e.message
     }
+
+    return outputFileName // Возвращаем из функции имя выходного файла
 
 }
 

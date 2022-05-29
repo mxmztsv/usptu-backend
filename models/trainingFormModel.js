@@ -19,7 +19,7 @@ module.exports = (sequelize, DataTypes) => {
         },
         Otchet: {
             type: DataTypes.TEXT,
-            allowNull: false
+            allowNull: true
         },
         Naimenovanie_programmy_PK: {
             type: "varchar(30)",

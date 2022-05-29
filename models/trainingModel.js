@@ -17,6 +17,10 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.DATE,
             allowNull: false
         },
+        Otchet: {
+            type: DataTypes.TEXT,
+            allowNull: true
+        },
         Forma_povysheniya_kvalifikacii: {
             type: "varchar(22)",
             allowNull: false,

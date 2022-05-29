@@ -11,6 +11,7 @@ const router = express.Router()
 router.post('/save', auth, ownerOnly, TrainingController.save)
 router.post('/remove', auth, ownerOnly, TrainingController.remove)
 router.get('/get-all-by-employee-id/:id', auth, TrainingController.getAllByEmployeeId)
+router.get('/get-by-id/:id', auth, TrainingController.getByTrainingId)
 router.post('/generate-document', auth, DocsController.generateDocument)
 router.post('/upload-document', auth, DocsController.uploadReport)
 

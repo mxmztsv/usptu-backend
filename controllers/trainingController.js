@@ -18,16 +18,18 @@ const save = async (req, res) => {
         if (req.body.trainingId !== null && req.body.trainingId !== undefined) {
             candidate = await Training.findByPk(req.body.trainingId)
         }
+        let training
         if (candidate) {
-            const training = await Training.update(data, {
+            await Training.update(data, {
                 where: {
                     Id_povysheniya_kvalifikacii: req.body.trainingId
                 }
             })
+            training = await Training.findByPk(req.body.trainingId)
         } else {
-            const training = await Training.create(data)
+            training = await Training.create(data)
         }
-        res.sendStatus(201)
+        res.status(201).json(training)
     } catch (e) {
         console.error(e.message)
         res.sendStatus(500)
@@ -69,9 +71,27 @@ const getAllByEmployeeId = async (req, res) => {
     }
 }
 
+/**
+ * Функция получения повышения квалификации по id.
+ */
+const getByTrainingId = async (req, res) => {
+    try {
+        const training = await Training.findOne({
+            where: {
+                Id_povysheniya_kvalifikacii: req.params.id
+            }
+        })
+        res.status(200).send(training)
+    } catch (e) {
+        console.error(e.message)
+        res.sendStatus(500)
+    }
+}
+
 // Экспорт модулей
 module.exports = {
     save,
     remove,
-    getAllByEmployeeId
+    getAllByEmployeeId,
+    getByTrainingId
 }

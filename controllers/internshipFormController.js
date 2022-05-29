@@ -10,7 +10,6 @@ const save = async (req, res) => {
         Id_povysheniya_kvalifikacii: req.body.trainingId,
         Tematika: req.body.topic,
         Mesto: req.body.location,
-        Otchet: req.body.report,
         Forma_programmy_stazhirovki: req.body.internshipForm,
         Naimenovanie_organizacii: req.body.companyName,
         Sistemnoe_izlozhenie: req.body.representation,
@@ -25,16 +24,18 @@ const save = async (req, res) => {
         if (req.body.formId !== null && req.body.formId !== undefined) {
             candidate = await InternshipForm.findByPk(req.body.formId)
         }
+        let internshipForm
         if (candidate) {
-            const internshipForm = await InternshipForm.update(data, {
+            await InternshipForm.update(data, {
                 where: {
                     Id_formy_stazhirovki: req.body.formId
                 }
             })
+            internshipForm = await InternshipForm.findByPk(req.body.formId)
         } else {
-            const internshipForm = await InternshipForm.create(data)
+            internshipForm = await InternshipForm.create(data)
         }
-        res.sendStatus(201)
+        res.status(201).json(internshipForm)
     } catch (e) {
         console.error(e.message)
         res.sendStatus(500)
@@ -60,16 +61,16 @@ const remove = async (req, res) => {
 }
 
 /**
- * Функция получения всех форм стажировки по id повышения квалификации. Все аналогично как в departmentController
+ * Функция получения формы стажировки по id повышения квалификации. Все аналогично как в departmentController
  */
-const getAllByTrainingId = async (req, res) => {
+const getByTrainingId = async (req, res) => {
     try {
-        const internshipForms = await InternshipForm.findAll({
+        const internshipForm = await InternshipForm.findOne({
             where: {
                 Id_povysheniya_kvalifikacii: req.params.id // Ищем по id повышения квалификации из тела запроса
             }
         })
-        res.status(200).send(internshipForms)
+        res.status(200).send(internshipForm)
     } catch (e) {
         console.error(e.message)
         res.sendStatus(500)
@@ -80,5 +81,5 @@ const getAllByTrainingId = async (req, res) => {
 module.exports = {
     save,
     remove,
-    getAllByTrainingId
+    getByTrainingId
 }

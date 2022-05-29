@@ -11,7 +11,6 @@ const save = async (req, res) => {
         Id_povysheniya_kvalifikacii: req.body.trainingId,
         Tematika: req.body.topic,
         Forma_programmy_PK: req.body.courseForm,
-        Otchet: req.body.report,
         Naimenovanie_programmy_PK: req.body.courseName,
         Mesto_prohozhdeniya_PK: req.body.trainingLocation,
         Izuchennye_voprosy: req.body.learningPoints,
@@ -42,16 +41,18 @@ const save = async (req, res) => {
         if (req.body.formId !== null && req.body.formId !== undefined) {
             candidate = await TrainingForm.findByPk(req.body.formId)
         }
+        let trainingForm
         if (candidate) {
-            const trainingForm = await TrainingForm.update(data, {
+            await TrainingForm.update(data, {
                 where: {
                     Id_formy_PK: req.body.formId
                 }
             })
+            trainingForm = await TrainingForm.findByPk(req.body.formId)
         } else {
-            const trainingForm = await TrainingForm.create(data)
+            trainingForm = await TrainingForm.create(data)
         }
-        res.sendStatus(201)
+        res.status(201).json(trainingForm)
     } catch (e) {
         console.error(e.message)
         res.sendStatus(500)
@@ -77,59 +78,25 @@ const remove = async (req, res) => {
 }
 
 /**
- * Функция получения всех форм стажировки по id повышения квалификации. Все аналогично как в departmentController
+ * Функция получения формы стажировки по id повышения квалификации. Все аналогично как в departmentController
  */
-const getAllByTrainingId = async (req, res) => {
+const getByTrainingId = async (req, res) => {
     try {
-        const trainingForms = await TrainingForm.findAll({
+        const trainingForm = await TrainingForm.findOne({
             where: {
                 Id_povysheniya_kvalifikacii: req.params.id
             }
         })
-        res.status(200).send(trainingForms)
+        res.status(200).send(trainingForm)
     } catch (e) {
         console.error(e.message)
         res.sendStatus(500)
     }
 }
 
-// /**
-//  * Функция генерации документов
-//  */
-// const generateDocument = async (req, res) => {
-//     // todo: Вероятно надо вынести в отдельный контроллер
-//     try {
-//         // Генерируем документ и получает имя выходного файла
-//         const fileName = await DocsGeneratorService.generateDocument(req.body.type, req.body.trainingId)
-//         // Возвращаем код 201 (Created)
-//         res.sendStatus(201)
-//     } catch (e) {
-//         console.error(e.message)
-//         res.sendStatus(500)
-//     }
-// }
-//
-// /**
-//  * Функция загрузки подписанного документа
-//  */
-// const uploadReport = async (req, res) => {
-//     // todo: Вероятно надо вынести в отдельный контроллер
-//     try {
-//         // Получаем документ из загруженных файлов в запросе
-//         const doc = req.files.document
-//         // Пермещаем документ в директорию uploaded_docs
-//         doc.mv('./uploaded_docs/' + doc.name)
-//         // Возвращаем статус 200 (ОК)
-//         res.sendStatus(200)
-//     } catch (e) {
-//         console.error(e.message)
-//         res.sendStatus(500)
-//     }
-// }
-
 // Мы уже знаем что это, не так ли? : )
 module.exports = {
     save,
     remove,
-    getAllByTrainingId
+    getByTrainingId
 }
