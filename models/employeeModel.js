@@ -22,7 +22,7 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: false
         },
         Data_Rozhdeniya: {
-            type: DataTypes.DATE,
+            type: DataTypes.DATEONLY,
             allowNull: false
         },
         Dolzhnost: {
@@ -44,7 +44,7 @@ module.exports = (sequelize, DataTypes) => {
             }
         },
         Data_priema: {
-            type: DataTypes.DATE,
+            type: DataTypes.DATEONLY,
             allowNull: false
         },
         Stazh: {

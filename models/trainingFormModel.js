@@ -15,9 +15,17 @@ module.exports = (sequelize, DataTypes) => {
         },
         Forma_programmy_PK: {
             type: DataTypes.TEXT,
-            allowNull: false
+            allowNull: true
+        },
+        Zagruzhennaya_forma_programmy_PK: {
+            type: DataTypes.TEXT,
+            allowNull: true
         },
         Otchet: {
+            type: DataTypes.TEXT,
+            allowNull: true
+        },
+        Zagruzhenniy_otchet: {
             type: DataTypes.TEXT,
             allowNull: true
         },
@@ -101,7 +109,7 @@ module.exports = (sequelize, DataTypes) => {
             }
         },
         Data_protokola: {
-            type: DataTypes.DATE,
+            type: DataTypes.DATEONLY,
             allowNull: false
         },
         Nomer_protokola: {

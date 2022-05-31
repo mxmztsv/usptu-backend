@@ -49,6 +49,7 @@ app.use('/internship-form', internshipFormRouter);
 
 //Все, что в директории generated_docs, отдаем как статические файлы
 // app.use('/documents', express.static(__dirname + '/server/generated_docs'));
-app.use('/documents', express.static('../generated_docs'));
+app.use('/download/generated', express.static('../generated_docs'));
+app.use('/download/uploaded', express.static('../uploaded_docs'));
 
 module.exports = app;

@@ -26,7 +26,7 @@ const signIn = async (req, res) => {
                 })
                 // Кладем access token в куки
                 // Тут указывается время жизни (90 дней) куки и httpOnly - запрет доступа м помощью JavaScript(для безопасности)
-                res.cookie('accessToken', tokens.accessToken, {maxAge: 90 * 24 * 60 * 60 * 1000, httpOnly: true})
+                res.cookie('accessToken', tokens.accessToken, {maxAge: 90 * 24 * 60 * 60 * 1000, httpOnly: true, SameSite: "None"})
                 // Возвращаем json с пользователем в ответе
                 res.json(candidate.dataValues)
             } else {

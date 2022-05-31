@@ -18,10 +18,18 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: false
         },
         Forma_programmy_stazhirovki: {
-            type: "varchar(30)",
-            allowNull: false
+            type: DataTypes.TEXT,
+            allowNull: true
+        },
+        Zagruzhennaya_forma_programmy_stazhirovki: {
+            type: DataTypes.TEXT,
+            allowNull: true
         },
         Otchet: {
+            type: DataTypes.TEXT,
+            allowNull: true
+        },
+        Zagruzhenniy_otchet: {
             type: DataTypes.TEXT,
             allowNull: true
         },

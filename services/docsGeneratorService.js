@@ -10,6 +10,7 @@ const generateDocx = require('generate-docx')
  * Функция возвращает данные для вставки в документ, название шаблона и название будущего документа.
  */
 const getContentForDocument = async (type, trainingId) => {
+    // todo: локализация даты
     let data = {}
     let templateFileName
     let outputFileName
@@ -65,6 +66,7 @@ const getContentForDocument = async (type, trainingId) => {
             // Название выходного файла
             outputFileName = `training_report_${trainingId}.docx`
             break
+
         case "internship_report":
             const internshipForm = await InternshipForm.findOne({
                 where: {
@@ -79,26 +81,26 @@ const getContentForDocument = async (type, trainingId) => {
             templateFileName = 'internship_report_template.docx'
             outputFileName = `internship_report_${trainingId}.docx`
             break
+
         case "training_form":
-            if (data.Forma_povysheniya_kvalifikacii === 'Стажировка') {
+            templateFileName = 'training_form_template.docx'
+            outputFileName = `training_form_${trainingId}.docx`
+            break
 
-                const internshipForm = await InternshipForm.findOne({
-                    where: {
-                        Id_povysheniya_kvalifikacii: trainingId
-                    }
-                })
+        case "internship_form":
+            const iForm = await InternshipForm.findOne({
+                where: {
+                    Id_povysheniya_kvalifikacii: trainingId
+                }
+            })
 
-                data = await Object.assign(data, internshipForm.dataValues)
+            data = await Object.assign(data, iForm.dataValues)
 
-                // Формируем инициалы руководителя
-                data.Initsiali_rukovoditelya = `${data.Familiya_rukovoditelya} ${data.Imya_rukovoditelya.slice(0, 1)}. ${data.Otchestvo_rukovoditelya.slice(0, 1)}.`
+            // Формируем инициалы руководителя
+            data.Initsiali_rukovoditelya = `${data.Familiya_rukovoditelya} ${data.Imya_rukovoditelya.slice(0, 1)}. ${data.Otchestvo_rukovoditelya.slice(0, 1)}.`
 
-                templateFileName = 'internship_form_template.docx'
-                outputFileName = `internship_form_${trainingId}.docx`
-            } else {
-                templateFileName = 'training_form_template.docx'
-                outputFileName = `training_form_${trainingId}.docx`
-            }
+            templateFileName = 'internship_form_template.docx'
+            outputFileName = `internship_form_${trainingId}.docx`
             break
     }
     return {
@@ -131,9 +133,9 @@ const generateDocument = async (type, trainingId) => {
         generateDocx(options, async (error, message) => {
             if (error) {
                 console.error(error)
-                return
             } else {
                 console.log(message)
+                console.log(type)
                 try {
                     // Кладем в БД ссылку на отчет
                     switch (type) {
@@ -152,7 +154,15 @@ const generateDocument = async (type, trainingId) => {
                             })
                             break
                         case "training_form":
-                            await Training.update({Otchet: outputFileName}, {
+                            await TrainingForm.update({Forma_programmy_PK: outputFileName}, {
+                                where: {
+                                    Id_povysheniya_kvalifikacii: trainingId
+                                }
+                            })
+                            break
+                        case "internship_form":
+                            console.log('case "internship_form"')
+                            await InternshipForm.update({Forma_programmy_stazhirovki: outputFileName}, {
                                 where: {
                                     Id_povysheniya_kvalifikacii: trainingId
                                 }

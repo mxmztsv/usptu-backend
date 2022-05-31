@@ -17,7 +17,7 @@ module.exports =  (req, res, next) => {
         // Достаем токен из куки
         const {accessToken} = req.cookies
 
-        console.log('token', accessToken)
+        // console.log('token', accessToken)
 
         // Если токена нет, значит пользователь не авторизован, возвращаем статус-код 401 (Not authorized)
         if (!accessToken) {

@@ -3,6 +3,8 @@
  */
 module.exports = (sequelize, DataTypes) => {
 
+    // todo: delete form on cascade
+
     const Training = sequelize.define("Povyshenie kvalifikacii", {
         Id_povysheniya_kvalifikacii: {
             type: DataTypes.INTEGER,
@@ -10,14 +12,18 @@ module.exports = (sequelize, DataTypes) => {
             primaryKey: true
         },
         Data_nachala: {
-            type: DataTypes.DATE,
+            type: DataTypes.DATEONLY,
             allowNull: false
         },
         Data_zaversheniya: {
-            type: DataTypes.DATE,
+            type: DataTypes.DATEONLY,
             allowNull: false
         },
         Otchet: {
+            type: DataTypes.TEXT,
+            allowNull: true
+        },
+        Zagruzhenniy_otchet: {
             type: DataTypes.TEXT,
             allowNull: true
         },
