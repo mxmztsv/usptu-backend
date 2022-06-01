@@ -1,5 +1,6 @@
 const db = require('../models')
 const bcrypt = require("bcrypt")
+const DateService = require("../services/dateService");
 const Employee = db.employees
 
 /**
@@ -16,34 +17,43 @@ const save = async (req, res) => {
         Uchenaya_stepen: req.body.degree,
         Zvanie: req.body.rank,
         Data_priema: req.body.hiringDate,
-        Stazh: req.body.experience,
         Id_podrazdeleniya: req.body.department,
         Login: req.body.login,
         Is_superuser: req.body.isSuperuser,
     }
 
-    // Хэшируем пароль и добавляем в data
-    data.Password = await bcrypt.hash(req.body.password, 3)
+    if (req.body.password !== undefined && req.body.password !== null && req.body.password.trim() !== '') {
+        // Если передан пароль, то хэшируем пароль и добавляем в data
+        console.log('pass', req.body.password)
+        data.Password = await bcrypt.hash(req.body.password, 3)
+    }
+
+    // Устанавливаем стаж в годах
+    data.Stazh = DateService.getExperienceByHiringDate(req.body.hiringDate)
 
     try {
         let candidate = null
+        let employee
         if (req.body.id !== null && req.body.id !== undefined) {
             candidate = await Employee.findByPk(req.body.id)
         }
         if (candidate) {
-            const employee = await Employee.update(data, {
+            employee = await Employee.update(data, {
                 where: {
                     Id_prepodavatelya: req.body.id
                 }
             })
+            // Получаем обновленного сотрудника из БД
+            employee = await Employee.findByPk(req.body.id)
         } else {
             try {
-                const employee = await Employee.create(data)
+                employee = await Employee.create(data)
             } catch (e) {
+                console.error(e.message)
                 return res.status(400).json({message: "Сотрудник с таким логином уже существует"})
             }
         }
-        res.sendStatus(201)
+        res.status(201).json(employee)
     } catch (e) {
         console.error(e.message)
         res.sendStatus(500)
@@ -69,6 +79,22 @@ const remove = async (req, res) => {
 }
 
 /**
+ * Функция получения сотрудника по id. Все аналогично как в departmentController
+ */
+const getEmployeeById = async (req, res) => {
+    try {
+        // Получаем подразделение из БД
+        const employee = await Employee.findByPk(req.params.id)
+        // Возвращаем в ответ код 200 (ОК) и подразделение
+        res.status(200).send(employee)
+    } catch (e) {
+        console.error(e.message)
+        // Если ловим ошибку, возвращаем 500 (Internal server error)
+        res.sendStatus(500)
+    }
+}
+
+/**
  * Функция получения всех. Все аналогично как в departmentController
  */
 const getAll = async (req, res) => {
@@ -85,5 +111,6 @@ const getAll = async (req, res) => {
 module.exports = {
     save,
     remove,
-    getAll
+    getAll,
+    getEmployeeById
 }

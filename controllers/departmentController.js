@@ -70,6 +70,22 @@ const remove = async (req, res) => {
 }
 
 /**
+ * Функция получения подразделения по id.
+ */
+const getDepartmentById = async (req, res) => {
+    try {
+        // Получаем подразделение из БД
+        const department = await Department.findByPk(req.params.id)
+        // Возвращаем в ответ код 200 (ОК) и подразделение
+        res.status(200).send(department)
+    } catch (e) {
+        console.error(e.message)
+        // Если ловим ошибку, возвращаем 500 (Internal server error)
+        res.sendStatus(500)
+    }
+}
+
+/**
  * Функция получения всех подразделений.
  */
 const getAll = async (req, res) => {
@@ -89,5 +105,6 @@ const getAll = async (req, res) => {
 module.exports = {
     save,
     remove,
-    getAll
+    getAll,
+    getDepartmentById
 }
