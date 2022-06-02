@@ -10,7 +10,6 @@ const save = async (req, res) => {
         Id_povysheniya_kvalifikacii: req.body.trainingId,
         Tematika: req.body.topic,
         Mesto: req.body.location,
-        Forma_programmy_stazhirovki: req.body.internshipForm,
         Naimenovanie_organizacii: req.body.companyName,
         Sistemnoe_izlozhenie: req.body.representation,
         Rekomendacii: req.body.recommendations,
