@@ -25,7 +25,8 @@ const app = express();
  * Подцепляем всякие middleware - промежуточные функции-обработчики
  */
 const corsOptions = {
-    origin: 'http://localhost:3000',
+    // origin: 'http://localhost:3000',
+    origin: 'http://192.168.0.104:3000',
     optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
     credentials: true
 }
