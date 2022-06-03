@@ -120,11 +120,11 @@ const generateDocument = async (type, trainingId) => {
     // В параметрах указан шаблон, данные и место для сохранения выходного документа
     const options = {
         template: {
-            filePath: `/docs_templates/${templateFileName}`,
+            filePath: `./docs_templates/${templateFileName}`,
             data
         },
         save: {
-            filePath: `/generated_docs/${outputFileName}`
+            filePath: `./generated_docs/${outputFileName}`
         }
     }
 
