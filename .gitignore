@@ -191,5 +191,5 @@ dist
 .pnp.*
 
 
-#generated_docs/*.docx
-#uploaded_docs/*
+generated_docs/**.docx
+uploaded_docs/**
