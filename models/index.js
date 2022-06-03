@@ -14,7 +14,7 @@ require('dotenv').config() // Для доступа к переменным ок
 const sequelize = new Sequelize(
     'usptu',
     'postgres',
-    '',
+    'root',
     {
         host: 'localhost',
         dialect: 'postgres'
