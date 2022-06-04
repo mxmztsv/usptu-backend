@@ -17,7 +17,8 @@ const sequelize = new Sequelize(
     'root',
     {
         host: 'localhost',
-        dialect: 'postgres'
+        dialect: 'postgres',
+        port: '5433'
     }
 )
 
