@@ -21,19 +21,18 @@ const cookieParser = require("cookie-parser"); // Модуль для работ
 // Создаем Express приложение
 const app = express();
 
+
+const corsOptions = {
+    origin: ['http://localhost:3000', 'http://192.168.0.107:3000'],
+    optionsSuccessStatus: 200,
+    credentials: true
+}
 /**
  * Подцепляем всякие middleware - промежуточные функции-обработчики
  */
-const corsOptions = {
-    // origin: 'http://localhost:3000',
-    // origin: ['http://192.168.0.107:3000', 'http://localhost:3000'],
-    origin: ['http://localhost:3000', 'http://192.168.0.107:3000'],
-    optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
-    credentials: true
-}
 app.use(cors(corsOptions));
 app.use(express.json());
-app.use(express.urlencoded({ extended: false })); // Я честно говоря не знаю что это, но так надо. Стоит погуглить : )
+app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(fileUpload({
     createParentPath: true
@@ -49,8 +48,7 @@ app.use('/training', trainingRouter);
 app.use('/training-form', trainingFormRouter);
 app.use('/internship-form', internshipFormRouter);
 
-//Все, что в директории generated_docs, отдаем как статические файлы
-// app.use('/documents', express.static(__dirname + '/server/generated_docs'));
+//Все, что в директории generated_docs и uploaded_docs, отдаем как статические файлы
 app.use('/download/generated', express.static('./generated_docs'));
 app.use('/download/uploaded', express.static('./uploaded_docs'));
 
