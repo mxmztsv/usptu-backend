@@ -31,6 +31,8 @@ const save = async (req, res) => {
     // Устанавливаем стаж в годах
     data.Stazh = DateService.getExperienceByHiringDate(req.body.hiringDate)
 
+    console.log(data)
+
     try {
         let candidate = null
         let employee
@@ -53,6 +55,7 @@ const save = async (req, res) => {
                 return res.status(400).json({message: "Сотрудник с таким логином уже существует"})
             }
         }
+        console.log(employee)
         res.status(201).json(employee)
     } catch (e) {
         console.error(e.message)

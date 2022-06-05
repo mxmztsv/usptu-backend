@@ -33,14 +33,14 @@ module.exports = (sequelize, DataTypes) => {
             type: "varchar(30)",
             allowNull: false,
             validate: {
-                isIn: [['Кандидат наук', 'Доктор наук']]
+                isIn: [['-', 'Кандидат наук', 'Доктор наук']]
             }
         },
         Zvanie: {
             type: "varchar(30)",
             allowNull: false,
             validate: {
-                isIn: [['Доцент', 'Профессор']]
+                isIn: [['-', 'Доцент', 'Профессор']]
             }
         },
         Data_priema: {

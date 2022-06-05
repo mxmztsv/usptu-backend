@@ -3,8 +3,6 @@
  */
 module.exports = (sequelize, DataTypes) => {
 
-    // todo: delete form on cascade
-
     const Training = sequelize.define("Povyshenie kvalifikacii", {
         Id_povysheniya_kvalifikacii: {
             type: DataTypes.INTEGER,

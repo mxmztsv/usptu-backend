@@ -1,3 +1,6 @@
+/**
+ * Функция получает дату найма в виде строки и текущий возвращает стаж
+ */
 const getExperienceByHiringDate = (hiringDateString) => {
     const hiringDate = Date.parse(hiringDateString)
     const now = new Date()
@@ -9,4 +12,16 @@ const getExperienceByHiringDate = (hiringDateString) => {
     } else return 0
 }
 
-module.exports = {getExperienceByHiringDate}
+/**
+ * Функция преобразует дату в RU формат.
+ * Пояснение: дата храниться в БД по умолчанию в формате гггг-мм-дд,
+ * но для русского пользователя привычнее формат дд.мм.гггг
+ */
+const toRU = (dateString) => {
+    return dateString.split('-').reverse().join('.')
+}
+
+module.exports = {
+    getExperienceByHiringDate,
+    toRU
+}

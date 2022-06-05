@@ -5,6 +5,7 @@ const Training = db.trainings
 const Employee = db.employees
 const Department = db.departments
 const generateDocx = require('generate-docx')
+const DateService = require("./dateService");
 
 /**
  * Функция возвращает данные для вставки в документ, название шаблона и название будущего документа.
@@ -43,11 +44,12 @@ const getContentForDocument = async (type, trainingId) => {
     data.Dolzhnost = employeeData.getDataValue('Dolzhnost')
     data.Uchenaya_stepen = employeeData.getDataValue('Uchenaya_stepen')
     data.Zvanie = employeeData.getDataValue('Zvanie')
-    data.Data_nachala = trainingData.getDataValue('Data_nachala')
-    data.Data_zaversheniya = trainingData.getDataValue('Data_zaversheniya')
+    data.Data_nachala = DateService.toRU(trainingData.getDataValue('Data_nachala')) // Преобразуем дату в RU формат
+    data.Data_zaversheniya = DateService.toRU(trainingData.getDataValue('Data_zaversheniya')) // Преобразуем дату в RU формат
     data.Forma_povysheniya_kvalifikacii = trainingData.getDataValue('Forma_povysheniya_kvalifikacii')
     data.Nazvaniye_podrazdeleniya = departmentData.getDataValue('Polnoe_nazvanie')
     data.Initsiali = `${employeeData.getDataValue('Familiya')} ${employeeData.getDataValue('Imya').slice(0, 1)}. ${employeeData.getDataValue('Otchestvo').slice(0, 1)}.`
+    data.Initsiali_zav_kafedry = `${departmentData.getDataValue('Familiya')} ${departmentData.getDataValue('Imya').slice(0, 1)}. ${departmentData.getDataValue('Otchestvo').slice(0, 1)}.`
 
     // В зависимости от переданного параметра type получаем остальные нужные для заполнения документа данные из БД
     switch (type) {
@@ -60,6 +62,9 @@ const getContentForDocument = async (type, trainingId) => {
 
             // Объединяем получаенные данные с data
             data = await Object.assign(data, trainingForm.dataValues)
+
+            // Преобразуем дату в RU формат
+            data.Data_protokola = DateService.toRU(data.Data_protokola)
 
             // Название необходимого шаблона
             templateFileName = 'training_report_template.docx'
