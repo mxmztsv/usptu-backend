@@ -18,15 +18,15 @@ const signIn = async (req, res) => {
             // Если пользователь есть, проверяем, совпадает ли переданный в теле запроса пароль с хэшем пароля в БД
             const isPasswordMatchesHash = await bcrypt.compare(req.body.password, candidate.getDataValue('Password'))
             if (isPasswordMatchesHash) {
-                // Если пароль совпал, генерируем токены для пользователя
-                // В токены кладем id пользователя и поле о том, является ли он суперпользователем
-                const tokens = TokenService.generateTokens({
+                // Если пароль совпал, генерируем токен для пользователя
+                // В токен кладем id пользователя и поле о том, является ли он суперпользователем
+                const token = TokenService.generateToken({
                     id: candidate.getDataValue('Id_prepodavatelya'),
                     isSuperuser: candidate.getDataValue('Is_superuser')
                 })
                 // Кладем access token в куки
                 // Тут указывается время жизни (90 дней) куки и httpOnly - запрет доступа м помощью JavaScript(для безопасности)
-                res.cookie('accessToken', tokens.accessToken, {maxAge: 90 * 24 * 60 * 60 * 1000, httpOnly: true, SameSite: "None"})
+                res.cookie('accessToken', token.accessToken, {maxAge: 90 * 24 * 60 * 60 * 1000, httpOnly: true, SameSite: "None"})
                 // Возвращаем json с пользователем в ответе
                 res.json(candidate.dataValues)
             } else {

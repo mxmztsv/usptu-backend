@@ -1,15 +1,13 @@
 const jwt = require('jsonwebtoken')
-require('dotenv').config()
+const {JWT_ACCESS_SECRET} = require("../config");
 
 /**
  * Функция генерации jwt токенов. Принимает payload - то что нужно положить в токен
  */
-const generateTokens = (payload) => {
-    const accessToken = jwt.sign(payload, 'process.env.JWT_ACCESS_SECRET', {expiresIn: '90d'})
-    const refreshToken = jwt.sign(payload, 'process.env.JWT_REFRESH_SECRET', {expiresIn: '90d'}) //мб не будем использовать...
+const generateToken = (payload) => {
+    const accessToken = jwt.sign(payload, JWT_ACCESS_SECRET, {expiresIn: '90d'})
     return {
-        accessToken,
-        refreshToken
+        accessToken
     }
 }
 
@@ -19,7 +17,7 @@ const generateTokens = (payload) => {
 const validateAccessToken = (token) => {
     try {
         // Возвращаем содержимое токена или null, если токен не валиден
-        return jwt.verify(token, 'process.env.JWT_ACCESS_SECRET')
+        return jwt.verify(token, JWT_ACCESS_SECRET)
     } catch (e) {
         return null
     }
@@ -27,6 +25,6 @@ const validateAccessToken = (token) => {
 
 // Экспорт функций из модуля
 module.exports = {
-    generateTokens,
+    generateToken,
     validateAccessToken
 }

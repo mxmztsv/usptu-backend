@@ -6,7 +6,6 @@ const Training = db.trainings
 const uploadDocument = async (reportType, trainingId, file, filename) => {
     try {
         // Пермещаем документ в директорию uploaded_docs
-        // file.mv('./uploaded_docs/' + file.name)
         await file.mv('./uploaded_docs/' + filename)
         // Кладем в БД ссылку на загруженный отчет
         switch (reportType) {

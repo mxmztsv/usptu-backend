@@ -12,12 +12,8 @@ module.exports =  (req, res, next) => {
 
     try {
 
-        // Достаем токен из поля authorization заголовка запроса
-        // const token = req.headers.authorization.split(' ')[1] // "Bearer TOKEN"
         // Достаем токен из куки
         const {accessToken} = req.cookies
-
-        // console.log('token', accessToken)
 
         // Если токена нет, значит пользователь не авторизован, возвращаем статус-код 401 (Not authorized)
         if (!accessToken) {
