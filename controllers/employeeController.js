@@ -1,6 +1,7 @@
 const db = require('../models')
 const bcrypt = require("bcrypt")
 const DateService = require("../services/dateService");
+const sequelize = require("sequelize");
 const Employee = db.employees
 
 /**
@@ -98,11 +99,28 @@ const getEmployeeById = async (req, res) => {
 }
 
 /**
- * Функция получения всех. Все аналогично как в departmentController
+ * Функция получения всех сотрудников в порядке убывания времени с даты последнего ПК.
  */
 const getAll = async (req, res) => {
     try {
-        const employees = await Employee.findAll()
+        const employees = await Employee.findAll({
+            attributes: {
+                include: [
+                    [
+                        sequelize.literal(`(
+                    SELECT "Data_zaversheniya"
+                    FROM "Povyshenie kvalifikacii"
+                    WHERE
+                        "Povyshenie kvalifikacii"."Id_prepodavatelya" = "Sotrudnik"."Id_prepodavatelya"
+                )`),
+                        "PK"
+                    ]
+                ]
+            },
+            order: [
+                [sequelize.literal("\"PK\"")]
+            ]
+        })
         res.status(200).send(employees)
     } catch (e) {
         console.error(e.message)
