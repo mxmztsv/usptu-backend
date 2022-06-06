@@ -11,7 +11,6 @@ const DateService = require("./dateService");
  * Функция возвращает данные для вставки в документ, название шаблона и название будущего документа.
  */
 const getContentForDocument = async (type, trainingId) => {
-    // todo: локализация даты
     let data = {}
     let templateFileName
     let outputFileName
