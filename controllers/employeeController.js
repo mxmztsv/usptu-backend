@@ -112,7 +112,7 @@ const getAll = async (req, res) => {
                     FROM "Povyshenie kvalifikacii"
                     WHERE
                         "Povyshenie kvalifikacii"."Id_prepodavatelya" = "Sotrudnik"."Id_prepodavatelya"
-                )`),
+                    ORDER BY "Data_zaversheniya" DESC LIMIT 1)`),
                         "PK"
                     ]
                 ]

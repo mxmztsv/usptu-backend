@@ -1,11 +1,11 @@
 /**
  * Здесь хранятся константы конфигурации приложения
  */
-const DB_NAME = 'usptu'
+const DB_NAME = 'usptu_local'
 const DB_USER = 'postgres'
 const DB_PASSWORD = 'root'
 const DB_HOST = 'localhost'
-const DB_PORT = '5433'
+const DB_PORT = '5432'
 const JWT_ACCESS_SECRET = '1234'
 
 module.exports = {
