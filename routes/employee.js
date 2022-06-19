@@ -10,6 +10,8 @@ const router = express.Router()
 router.post('/save', EmployeeController.save)
 router.post('/remove', auth, adminOnly, EmployeeController.remove)
 router.get('/get-all', auth, adminOnly, EmployeeController.getAll)
+router.get('/get-by-training-period', auth, adminOnly, EmployeeController.getByTrainingPeriod)
+router.get('/get-by-period-without-training', auth, adminOnly, EmployeeController.getByPeriodWithoutTraining)
 router.get('/get-by-id/:id', auth, EmployeeController.getEmployeeById)
 
 module.exports = router

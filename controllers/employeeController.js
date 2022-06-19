@@ -1,7 +1,8 @@
 const db = require('../models')
 const bcrypt = require("bcrypt")
 const DateService = require("../services/dateService");
-const sequelize = require("sequelize");
+const sequelize = db.sequelize
+const {QueryTypes} = require("sequelize");
 const Employee = db.employees
 
 /**
@@ -128,10 +129,63 @@ const getAll = async (req, res) => {
     }
 }
 
+/**
+ * Функция получения всех сотрудников, проходивших ПК в заданный период.
+ */
+const getByTrainingPeriod = async (req, res) => {
+    const {startDate, endDate} = req.query
+    try {
+
+        const employees = await sequelize.query(`SELECT *
+                                                 FROM (SELECT *, (
+                                                     SELECT "Data_zaversheniya"
+                                                     FROM "Povyshenie kvalifikacii"
+                                                     WHERE
+                                                             "Povyshenie kvalifikacii"."Id_prepodavatelya" = "Sotrudnik"."Id_prepodavatelya"
+                                                     ORDER BY "Data_zaversheniya" DESC LIMIT 1) AS "PK" FROM "Sotrudnik" AS "Sotrudnik" ORDER BY "PK") as "result"
+                                                WHERE ("PK"::date >= cast('${startDate}' as date)
+                                                AND "PK"::date <= cast('${endDate}' as date))
+                                                `, {type: QueryTypes.SELECT})
+        res.status(200).send(employees)
+    } catch (e) {
+        console.error(e.message)
+        res.sendStatus(500)
+    }
+}
+
+/**
+ * Функция получения всех сотрудников, не проходивших ПК зп последние N лет.
+ */
+const getByPeriodWithoutTraining = async (req, res) => {
+    const {yearsWithoutTraining} = req.query
+
+    // Считаем пограничную дату для включения в запрос (текущая дата - переданное кол-во лет)
+    let now = new Date()
+    const rangeDateToIncludeInMilliseconds = new Date(now.setMonth(now.getMonth() - (parseInt(yearsWithoutTraining) * 12)))
+    const rangeDateToInclude = `${rangeDateToIncludeInMilliseconds.getDate()}-${rangeDateToIncludeInMilliseconds.getMonth()}-${rangeDateToIncludeInMilliseconds.getFullYear()}`
+    try {
+        const employees = await sequelize.query(`SELECT *
+                                                 FROM (SELECT *, (
+                                                     SELECT "Data_zaversheniya"
+                                                     FROM "Povyshenie kvalifikacii"
+                                                     WHERE
+                                                             "Povyshenie kvalifikacii"."Id_prepodavatelya" = "Sotrudnik"."Id_prepodavatelya"
+                                                     ORDER BY "Data_zaversheniya" DESC LIMIT 1) AS "PK" FROM "Sotrudnik" AS "Sotrudnik" ORDER BY "PK") as "result"
+                                                 WHERE "PK"::date <= cast('${rangeDateToInclude}' as date)
+        `, {type: QueryTypes.SELECT})
+        res.status(200).send(employees)
+    } catch (e) {
+        console.error(e.message)
+        res.sendStatus(500)
+    }
+}
+
 // Экспорт функций из модуля
 module.exports = {
     save,
     remove,
     getAll,
-    getEmployeeById
+    getEmployeeById,
+    getByTrainingPeriod,
+    getByPeriodWithoutTraining
 }
