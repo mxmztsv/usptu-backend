@@ -162,7 +162,7 @@ const getByPeriodWithoutTraining = async (req, res) => {
     // Считаем пограничную дату для включения в запрос (текущая дата - переданное кол-во лет)
     let now = new Date()
     const rangeDateToIncludeInMilliseconds = new Date(now.setMonth(now.getMonth() - (parseInt(yearsWithoutTraining) * 12)))
-    const rangeDateToInclude = `${rangeDateToIncludeInMilliseconds.getDate()}-${rangeDateToIncludeInMilliseconds.getMonth()}-${rangeDateToIncludeInMilliseconds.getFullYear()}`
+    const rangeDateToInclude = `${rangeDateToIncludeInMilliseconds.getFullYear()}-${rangeDateToIncludeInMilliseconds.getMonth()}-${rangeDateToIncludeInMilliseconds.getDate()}`
     try {
         const employees = await sequelize.query(`SELECT *
                                                  FROM (SELECT *, (
